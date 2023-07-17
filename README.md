@@ -62,4 +62,16 @@ TestMOTDataset:
 
 ```
 
+训练模型
+```python
+python -m paddle.distributed.launch --log_dir=./fairmot_dla34_30e_1088x608/ --gpus 0,1,2  tools/train.py -c configs/mot/fairmot/fairmot_dla34_30e_1088x608.yml  --use_vdl=true --vdl_log_dir=vdl_dir/fai --eval>out.log 2>&1&
+```
+可视化查看训练过程，前提是按照了visualdl，用pip安装
+```shell
+visualdl --logdir=vdl_dir/outside_court/ --host 0.0.0.0 &
+```
 
+模型预测视频,需ffmpeg，ffmpeg自行下载
+```
+CUDA_VISIBLE_DEVICES=0 python tools/infer_mot.py -c configs/mot/fairmot/fairmot_dla34_30e_1088x608.yml -o weights=output/fairmot_dla34_30e_1088x608/5.pdparams   --video_file=dataset/7.8_person_test/video/sc2.mp4  --frame_rate=20 --save_videos
+```
