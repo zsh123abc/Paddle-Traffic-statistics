@@ -68,10 +68,23 @@ python -m paddle.distributed.launch --log_dir=./fairmot_dla34_30e_1088x608/ --gp
 ```
 可视化查看训练过程，前提是按照了visualdl，用pip安装
 ```shell
-visualdl --logdir=vdl_dir/outside_court/ --host 0.0.0.0 &
+visualdl --logdir=vdl_dir/fairmot_dla34_30e_1088x608/ --host 0.0.0.0 &
+```
+
+模型导出
+```
+!CUDA_VISIBLE_DEVICES=0 python tools/export_model.py -c configs/mot/fairmot/fairmot_dla34_30e_1088x608.yml -o weights=output/fairmot_dla34_30e_1088x608/model_final.pdparams
+```
+
+优化模型，转换格式
+```python
+paddle_lite_opt --valid_targets=arm \
+--model_file=inference_model/fairmot_dla34_30e_1088x608/model.pdmodel \
+--param_file=inference_model//fairmot_dla34_30e_1088x608.pdiparams \
+--optimize_out=inference_model/fairmot_dla34_30e_1088x608/ping-pang
 ```
 
 模型预测视频,需ffmpeg，ffmpeg自行下载
 ```
-CUDA_VISIBLE_DEVICES=0 python tools/infer_mot.py -c configs/mot/fairmot/fairmot_dla34_30e_1088x608.yml -o weights=output/fairmot_dla34_30e_1088x608/5.pdparams   --video_file=dataset/7.8_person_test/video/sc2.mp4  --frame_rate=20 --save_videos
+CUDA_VISIBLE_DEVICES=0 python tools/infer_mot.py -c configs/mot/fairmot/fairmot_dla34_30e_1088x608.yml -o weights=output/fairmot_dla34_30e_1088x608/5.pdparams   --video_file=dataset/video/sc2.mp4  --frame_rate=20 --save_videos
 ```
