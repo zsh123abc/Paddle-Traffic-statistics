@@ -14,7 +14,7 @@ PaddlePaddle 2.4.2
 
 
 部署环境：
-先拉paddle镜像
+先拉镜像
 ```
 docker pull 2.4.2-gpu-cuda11.2-cudnn8.2-trt8.0
 ```
